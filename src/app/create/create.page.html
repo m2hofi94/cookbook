@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Neues Rezept
+    </ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+      <ion-button (click)="submit()">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="recipieForm" (submit)="submit()">
+    <ion-card>
+      <div class="recipie-img">
+        <ion-img src="assets/no-img.png" (click)="imageClick()"></ion-img>
+        <ion-icon name="create" class="ion-float-right"></ion-icon>
+      </div>
+      <ion-card-header (click)="infoHidden=!infoHidden" class="clickable">
+        <ion-card-title>Rezeptinfos
+          <ion-icon name="arrow-dropdown" float-right [class.rotate]="infoHidden"></ion-icon>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content [hidden]="infoHidden">
+        <ion-item>
+          <ion-input type="text" formControlName="name" placeholder="Titel"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea type="text" auto-grow="true" formControlName="description" placeholder="Beschreibung">
+          </ion-textarea>
+        </ion-item>
+        <ion-item class="item-tag">
+          <ion-input hidden></ion-input>
+          <tag-input formControlName="keywords" placeholder="+" secondaryPlaceholder="Tags" separatorKeys="[',',';']"
+            ripple="false"></tag-input>
+        </ion-item>
+
+        <ion-item-divider></ion-item-divider>
+
+        <div formGroupName="yield">
+          <ion-item class="combined ion-text-end">
+            <ion-label>Menge</ion-label>
+            <ion-input placeholder="0" type="number" formControlName="amount" ngModel></ion-input>
+            <ion-input type="text" formControlName="type" appSelectAll></ion-input>
+          </ion-item>
+        </div>
+        <input type="file" accept="image/*" #file formControlName="image" hidden>
+        <ion-item class="ion-text-end">
+          <ion-label>Kochzeit</ion-label>
+          <ion-input type="text" formControlName="cookTime"></ion-input>
+        </ion-item>
+        <ion-item class="ion-text-end">
+          <ion-label>Vorbereitungszeit</ion-label>
+          <ion-input type="text" formControlName="prepTime"></ion-input>
+        </ion-item>
+        <ion-item class="ion-text-end">
+          <ion-label>Kalorien</ion-label>
+          <ion-input type="number" formControlName="calories"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Schwierigkeit</ion-label>
+          <ion-select placeholder="-" formControlName="difficulty" interface="popover">
+            <ion-select-option value="hard">Schwer</ion-select-option>
+            <ion-select-option value="normal">Normal</ion-select-option>
+            <ion-select-option value="easy">Einfach</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="steps">
+      <ion-card-header (click)="stepsHidden=!stepsHidden" class="clickable">
+        <ion-card-title>Schritte
+          <ion-icon name="arrow-dropdown" float-right [class.rotate]="stepsHidden"></ion-icon>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content [hidden]="stepsHidden" formArrayName="steps">
+        <ion-item *ngFor="let step of steps.controls; let i=index">
+          <ion-textarea type='text' [formControlName]="i" auto-grow="true" placeholder="Schneiden, Kochen, Genießen">
+          </ion-textarea>
+        </ion-item>
+        <ion-fab vertical="bottom" horizontal="center">
+          <ion-fab-button (click)="newStepRow()" #fab>
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

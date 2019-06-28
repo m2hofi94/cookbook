@@ -1,24 +1,24 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      {{recipie.name}}
+      {{(recipie | async)?.name}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="recipie | async as lrecipie">
   <ion-card class="welcome-card">
-    <ion-img class="recipe-img" [src]="recipie.image"></ion-img>
+    <ion-img class="recipe-img" [src]="lrecipie?.image"></ion-img>
     <ion-card-header>
       <ion-card-subtitle>
-        <ion-chip *ngFor="let tag of recipie.keywords" color="primary" outline>
+        <ion-chip *ngFor="let tag of lrecipie?.keywords" color="primary" outline>
           <ion-label>{{tag}}</ion-label>
         </ion-chip>
       </ion-card-subtitle>
-      <ion-card-title>{{recipie.name}}</ion-card-title>
+      <ion-card-title>{{lrecipie?.name}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{recipie.description || 'Keine Beschreibung'}} </p>
+      <p>{{lrecipie?.description || 'Keine Beschreibung'}} </p>
 
     </ion-card-content>
   </ion-card>
@@ -28,27 +28,27 @@
         <ion-row>
           <ion-col size-md="4" size="12">
             <ion-list>
-              <ion-item class="portion-size" *ngIf="recipie.yield">
-                <ion-label>{{recipie.yield.type}}</ion-label>
-                <ion-input text-end (ngModelChange)="onYieldChange($event)" type="number" [(ngModel)]="feeds" min="1"
+              <ion-item class="portion-size" *ngIf="lrecipie?.yield">
+                <ion-label>{{lrecipie?.yield.type}}</ion-label>
+                <ion-input text-end (ngModelChange)="onYieldChange($event)" type="number" [(ngModel)]="lrecipie.yield.amount" min="1"
                   required="true" debounce="250" inputmode="numeric">
                 </ion-input>
               </ion-item>
-              <ion-item *ngIf="recipie?.prepTime">
+              <ion-item *ngIf="lrecipie?.prepTime">
                 <ion-label>Vorbereitungszeit</ion-label>
-                {{recipie.prepTime}}
+                {{lrecipie?.prepTime}}
               </ion-item>
-              <ion-item *ngIf="recipie?.cookTime">
+              <ion-item *ngIf="lrecipie?.cookTime">
                 <ion-label>Koch-/Backzeit</ion-label>
-                {{recipie.cookTime}}
+                <ion-text>{{lrecipie?.cookTime}}</ion-text>
               </ion-item>
-              <ion-item *ngIf="recipie?.calories">
+              <ion-item *ngIf="lrecipie?.calories">
                 <ion-label>Kalorien</ion-label>
-                {{recipie.calories}}
+                {{lrecipie?.calories}}
               </ion-item>
-              <ion-item *ngIf="recipie?.difficulty">
+              <ion-item *ngIf="lrecipie?.difficulty">
                 <ion-label>Schwierigkeit</ion-label>
-                {{recipie.difficulty}}
+                {{lrecipie?.difficulty}}
               </ion-item>
             </ion-list>
           </ion-col>
@@ -59,9 +59,9 @@
   <ion-card>
     <ion-card-content>
       <ion-grid>
-        <ion-row *ngFor="let step of recipie?.steps">
+        <ion-row *ngFor="let step of lrecipie?.steps">
           <ion-col size-md="4" size="12" *ngIf="step.ingredients" align-self-start>
-            <ion-text *ngFor="let ingr of step.ingredients">{{displayIngredient(ingr)}} <br
+            <ion-text *ngFor="let ingr of step?.ingredients">{{displayIngredient(ingr)}} <br
                 *ngIf="step.ingredients.length > 1"></ion-text>
           </ion-col>
           <ion-col align-self-end class="instructions">
@@ -75,7 +75,7 @@
   </ion-card>
   <ion-card>
     <ion-card-content>
-      <div *ngFor="let remark of recipie?.finalRemarks">
+      <div *ngFor="let remark of lrecipie?.finalRemarks">
         <h2>{{remark.title}}</h2>
         <p>{{remark.text}}</p>
       </div>
