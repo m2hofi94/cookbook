@@ -5,8 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -17,6 +15,8 @@ import { AppComponent } from './app.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(localeDe, 'de');
 
@@ -31,11 +31,12 @@ registerLocaleData(localeDe, 'de');
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase, 'cookbook'),
+    AngularFirestoreModule.enablePersistence(),
     AngularFirestoreModule,
+    AngularFireStorageModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

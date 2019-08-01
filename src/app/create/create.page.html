@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Neues Rezept
+      {{editing ? 'Rezept bearbeiten' : 'Neues Rezept'}}
     </ion-title>
     <ion-buttons slot="secondary">
-      <ion-button>
+      <ion-button *ngIf="editing" (click)="deleteRecipie()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
       <ion-button (click)="submit()">
@@ -18,8 +18,9 @@
   <form [formGroup]="recipieForm" (submit)="submit()">
     <ion-card>
       <div class="recipie-img">
-        <ion-img src="assets/no-img.png" (click)="imageClick()"></ion-img>
+        <ion-img [src]="imgUrl" (click)="imageClick()"></ion-img>
         <ion-icon name="create" class="ion-float-right"></ion-icon>
+        <input type="file" accept="image/*" #file (change)="fileSelected($event)" formControlName="image" hidden>
       </div>
       <ion-card-header (click)="infoHidden=!infoHidden" class="clickable">
         <ion-card-title>Rezeptinfos
@@ -49,7 +50,6 @@
             <ion-input type="text" formControlName="type" appSelectAll></ion-input>
           </ion-item>
         </div>
-        <input type="file" accept="image/*" #file formControlName="image" hidden>
         <ion-item class="ion-text-end">
           <ion-label>Kochzeit</ion-label>
           <ion-input type="text" formControlName="cookTime"></ion-input>

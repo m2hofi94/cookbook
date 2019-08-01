@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Ingredient, Recipie } from './recipie';
 import { formatNumber } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 
 @Component({
@@ -16,16 +17,26 @@ export class DetailsPage implements OnInit {
   recipie: any;
   feeds: number;
   oldFeeds: number;
+  imgUrl: Observable<string>;
   // feeds = this.recipie.yield.amount;
   // oldFeeds = this.feeds;
   id: string;
   private itemDoc: AngularFirestoreDocument<Recipie>;
   item: Observable<Recipie>;
 
-  constructor(private route: ActivatedRoute, private afs: AngularFirestore) {
+  constructor(
+    private route: ActivatedRoute,
+    private afs: AngularFirestore,
+    private storage: AngularFireStorage,
+    private router: Router,
+  ) {
+
   }
 
-  ngOnInit() {
+
+  async ngOnInit(): Promise<void> {
+    console.log('oninit');
+
     this.id = this.route.snapshot.paramMap.get('id');
     this.itemDoc = this.afs.doc<Recipie>('recipies/' + this.id);
     this.item = this.itemDoc.valueChanges();
@@ -56,6 +67,11 @@ export class DetailsPage implements OnInit {
 
       this.oldFeeds = newAmount;
     }
+  }
+
+  edit() {
+    console.log('edit');
+    this.router.navigate(['tabs', 'edit', this.id]);
   }
 
 }

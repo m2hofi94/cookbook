@@ -3,6 +3,11 @@
     <ion-title>
       {{(recipie | async)?.name}}
     </ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button [routerLink]="['/tabs', 'edit', this.id]">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -30,8 +35,8 @@
             <ion-list>
               <ion-item class="portion-size" *ngIf="lrecipie?.yield">
                 <ion-label>{{lrecipie?.yield.type}}</ion-label>
-                <ion-input text-end (ngModelChange)="onYieldChange($event)" type="number" [(ngModel)]="lrecipie.yield.amount" min="1"
-                  required="true" debounce="250" inputmode="numeric">
+                <ion-input text-end (ngModelChange)="onYieldChange($event)" type="number"
+                  [(ngModel)]="lrecipie.yield.amount" min="1" required="true" debounce="250" inputmode="numeric">
                 </ion-input>
               </ion-item>
               <ion-item *ngIf="lrecipie?.prepTime">

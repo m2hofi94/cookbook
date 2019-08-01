@@ -17,6 +17,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'edit',
+        children: [
+          {
+            path: ':id',
+            loadChildren: '../create/create.module#CreatePageModule'
+          }
+        ]
+      },
+      {
         path: 'create',
         children: [
           {
